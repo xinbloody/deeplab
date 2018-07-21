@@ -1,0 +1,67 @@
+import os 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+######train######
+#################
+python deeplab/train02.py \
+    --logtostderr \
+    --training_number_of_steps=1000 \
+    --train_split="train" \
+    --model_variant="xception_65" \
+    --atrous_rates=6 \
+    --atrous_rates=12 \
+    --atrous_rates=18 \
+    --output_stride=16 \
+    --decoder_output_stride=4 \
+    --train_crop_size=513 \
+    --train_crop_size=513 \
+    --train_batch_size=1 \
+    --dataset="cityscapes" \
+    --tf_initial_checkpoint='/home/cxx/Deeplab/models/research/deeplab/backbone/deeplabv3_cityscapes_train/model.ckpt' \
+    --train_logdir='/home/cxx/Deeplab/models/research/deeplab/datasets/cityscapes/exp/train_on_train_set/train' \
+    --dataset_dir='/home/cxx/Deeplab/models/research/deeplab/datasets/cityscapes/tfrecord'
+
+##自己改的
+python deeplab/train02.py \
+    --model_variant="xception_65" \
+#因为在common.py文件里定义，所以要写上
+
+
+######eval######
+################
+# From tensorflow/models/research/
+python deeplab/eval.py \
+    --logtostderr \
+    --eval_split="val" \
+    --model_variant="xception_65" \
+    --atrous_rates=6 \
+    --atrous_rates=12 \
+    --atrous_rates=18 \
+    --output_stride=16 \
+    --decoder_output_stride=4 \
+    --eval_crop_size=1025 \
+    --eval_crop_size=2049 \
+    --dataset="cityscapes" \
+    --checkpoint_dir='/home/cxx/Deeplab/models/research/deeplab/datasets/cityscapes/exp/train_on_train_set/train' \
+    --eval_logdir='/home/cxx/Deeplab/models/research/deeplab/datasets/cityscapes/exp/train_on_train_set/eval' \
+    --dataset_dir='/home/cxx/Deeplab/models/research/deeplab/datasets/cityscapes/tfrecord'
+
+#####visual######
+#################
+#From tensorflow/models/research/
+python deeplab/vis.py \
+    --logtostderr \
+    --vis_split="val" \
+    --model_variant="xception_65" \
+    --atrous_rates=6 \
+    --atrous_rates=12 \
+    --atrous_rates=18 \
+    --output_stride=16 \
+    --decoder_output_stride=4 \
+    --vis_crop_size=1025 \
+    --vis_crop_size=2049 \
+    --dataset="cityscapes" \
+    --colormap_type="cityscapes" \
+    --checkpoint_dir='/home/cxx/Deeplab/models/research/deeplab/datasets/cityscapes/exp/train_on_train_set/train' \
+    --vis_logdir='/home/cxx/Deeplab/models/research/deeplab/datasets/cityscapes/exp/train_on_train_set/vis' \
+    --dataset_dir='/home/cxx/Deeplab/models/research/deeplab/datasets/cityscapes/tfrecord'
